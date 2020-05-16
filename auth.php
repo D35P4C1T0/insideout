@@ -1,25 +1,31 @@
 <?php
-include "config.php";
+include 'config.php';
+session_start();
 
-if (isset($_POST['but_submit'])) {
+if (isset($_POST["username"])) {
 
-    $uname = mysqli_real_escape_string($con, $_POST['txt_uname']);
-    $password = mysqli_real_escape_string($con, $_POST['txt_pwd']);
-    // pwd to be hashed
+    $username = $_POST["username"];
+    $password = $_POST["password"];
 
-    if ($uname != "" && $password != "") {
+    $sql = "SELECT * FROM dipendenti WHERE matricola = :username";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['username' => $username]);
+    $recordUtente = $stmt->fetch();
 
-        $sql_query = "select count(*) as cntUser from dipendenti where matricola='" . $uname . "' and HashedPW='" . $password . "'";
-        $result = mysqli_query($con, $sql_query);
-        $row = mysqli_fetch_array($result);
-
-        $count = $row['cntUser'];
-
-        if ($count > 0) {
-            $_SESSION['uname'] = $uname;
-            header('Location: home.php');
-        } else {
-            echo "Invalid username and password";
-        }
+    if ($recordUtente && password_verify($password, $recordUtente["HashedPW"])) {
+        $_SESSION["utente"] = $recordUtente;
     }
+
+}
+if (isset($_SESSION["utente"])) {
+    $utente_autenticato = true;
+    $nome = $_SESSION["utente"]["nome"];
+    $cognome = $_SESSION["utente"]["cognome"];
+    header('Location: ./home.php');
+} else {
+    $utente_autenticato = false;
+    echo "<p>Wrong credentials!</p>";
+    session_abort();
+    sleep(3);
+    header('Location: ./index.php');
 }

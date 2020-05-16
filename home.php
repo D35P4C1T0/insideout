@@ -8,5 +8,18 @@
 </head>
 <body>
     <p>Il segreto di pulcinella</p>
+    <?php
+
+$utente_autenticato = $_SESSION["utente"];
+if ($utente_autenticato) {
+    echo '< class="card warning fluid">Ciao ' . $nome . ' ' . $cognome . ' <strong>ID di sessione</strong> ' . session_id() . '</       div>';
+}
+
+?>
+
+<form action="./logout.php">
+    <input type="submit" value="Logout" />
+</form>
+
 </body>
 </html>
