@@ -1,13 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.min.css">
+    <link rel="stylesheet" href="./style/home.css">
+    
     <title>Home</title>
 </head>
 <body>
-    <h1>Flow monitor</h1>
+
+<ul class='navbar'>
+  <li><a href="./home.php">Home</a></li>
+  <li><a href="./data.php">Grafico</a></li>
+  <li><a href="./logout.php">Logout</a></li>
+</ul>
+
+<p><h1>Flow monitor</h1></p>
+    
 <p>
     <?php
         include './auth.php';
@@ -23,6 +33,7 @@
         }
     ?>
 </p>
+<br>
 
 <?php
 include './utils/insideoutLogic.php';
@@ -76,25 +87,24 @@ if(array_key_exists('action',$_GET)){
 } 
 ?>
 
- 
-<form action="./home.php" method="get">
-  <input type="submit" name="action" value="add">
-
-  <p><?php 
-  
-  $result = $pdo->query("SELECT n_presenti FROM presenti WHERE ID='X'")->fetch();
-  // console_log($result);
-  echo $result['n_presenti'];
-
-  ?></p>
-
-  <input type="submit" name="action" value="remove">
-</form>
-<form action="./logout.php">
-    <input type="submit" value="Logout" />
-</form>
-
+<div class="container">
+   <ul class="buttonbar">
+      <form action="./home.php" method="get">
+    
+         <li class='button'><input type="submit" name="action" value="add" class='button'></li>
+         
+            <li class='button'><div class='counter'><?php 
+               $result = $pdo->query("SELECT n_presenti FROM presenti WHERE ID='X'")->fetch();
+               // console_log($result);
+               echo $result['n_presenti'];
+               ?></div></li>
+         
+         <li class='button'><input type="submit" name="action" value="remove" class='button'></li>
+      </form>
+   </ul>
+</div>
 
 <script src="./utils/reload.js"></script>
+<!-- reloads page once in a while -->
 </body>
 </html>

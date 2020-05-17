@@ -4,15 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.min.css">
+    <link rel="stylesheet" href="./style/home.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
     <title>Parametri di ricerca</title>
   </head>
   <body>
 
+  <ul class='navbar'>
+    <li><a href="./home.php">Home</a></li>
+    <li><a href="./data.php">Grafico</a></li>
+    <li><a href="./logout.php">Logout</a></li>
+  </ul>
+
+  <p>
   <form type='get' action='./data.php'>
     <label for="datePicker">Periodo:</label>
     <input type="date" id="datePicker" name="datePicker">
     <input type='submit'>
   </form>
+  </p>
 
     <?php
     include './auth.php';
@@ -35,11 +45,14 @@
         );
         array_push($storico, $element);
       }
-
-      // var_dump($storico);
-      // storio -> sessione
     }
-
     ?>
+    <script type="text/javascript">
+    window.sitescriptdata={};
+    window.sitescriptdata.storico = (<?php echo json_encode($storico,JSON_HEX_TAG); ?>)
+    </script>
+    
+    <div class="container"><canvas id='chart'></canvas></div>
+    <script src='./utils/plotChart.js'></script>
   </body>
 </html>
