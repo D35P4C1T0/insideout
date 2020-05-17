@@ -76,6 +76,7 @@ if(array_key_exists('action',$_GET)){
 } 
 ?>
 
+ 
 <form action="./home.php" method="get">
   <input type="submit" name="action" value="add">
 
@@ -92,6 +93,7 @@ if(array_key_exists('action',$_GET)){
 <form action="./logout.php">
     <input type="submit" value="Logout" />
 </form>
+
 
 <script src="./utils/reload.js"></script>
 </body>
