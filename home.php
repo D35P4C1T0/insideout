@@ -27,24 +27,61 @@
 <?php
 include './utils/insideoutLogic.php';
 include_once './utils/classes.php';
+// include_once './config.php';
 
-if (!empty($_GET['act'])) {
-    $peopleStack = new Stack();
-    for ($i = 1; $i <= 5; $i++) {    
-    $peopleStack = simulate_people($peopleStack);
-    sleep(1);
+$people = null;
+
+// keep people list in session
+if (!isset($_SESSION['people'])) {
+    $_SESSION['people'] = new stack;
+} else {
+    $people = clone $_SESSION['people'];
+}
+
+if(array_key_exists('action',$_GET)){
+    // echo $_GET['action'];
+    switch ($_GET['action']){
+        case 'add':
+            $sql = "INSERT INTO registro_azioni (dipendente_ID, azione) values (:dipendente_ID, :azione)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['dipendente_ID' => $_SESSION["utente"]["ID"], 'azione' => '+']);
+            $recordUtente = $stmt->fetch();
+            /////////////////////////////////
+            $pdo->query("UPDATE presenti SET n_presenti = n_presenti + 1");
+            /////////////////////////////////
+            console_log('push avvvenuto');
+            unset($_GET);
+            break;
+        case 'remove':
+            $result = $pdo->query("SELECT n_presenti FROM presenti WHERE ID='X'")->fetch();
+            // console_log($result);
+            if ($result['n_presenti'] < 1) {
+                console_log("stack empty");
+                break;
+            }
+            $sql = "INSERT INTO registro_azioni (dipendente_ID, azione) values (:dipendente_ID, :azione)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['dipendente_ID' => $_SESSION["utente"]["ID"], 'azione' => '-']);
+            $recordUtente = $stmt->fetch();
+            /////////////////////////////////
+            $pdo->query("UPDATE presenti SET n_presenti = n_presenti - 1");
+            /////////////////////////////////
+            console_log('pop avvvenuto');
+            unset($_GET);
+            break;
     }
-
-} else {}
+    // unset($_GET);
+    // header("Location: ".$_SERVER['PHP_SELF']);
+   
+} 
 ?>
 
+<form action="./home.php" method="get">
+  <input type="submit" name="action" value="add">
+  <input type="submit" name="action" value="remove">
+</form>
 <form action="./logout.php">
     <input type="submit" value="Logout" />
-</form>
-
-<form action="home.php" method="get">
-  <input type="hidden" name="act" value="run">
-  <input type="submit" value="Run me now!">
 </form>
 
 </body>

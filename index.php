@@ -21,7 +21,7 @@
                 <input type="password" class="textbox" id="password" name="password" placeholder="Password"/>
             </div>
             <div>
-                <input type="submit" value="Submit"/>
+                <input type="submit" value="Accedi"/>
             </div>
         </div>
     </form>
