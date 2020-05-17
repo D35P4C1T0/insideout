@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+include './config.php';
 session_start();
 
 if (isset($_POST["username"])) {
@@ -19,9 +19,9 @@ if (isset($_POST["username"])) {
 }
 if (isset($_SESSION["utente"])) {
     $utente_autenticato = true;
-    $nome = $_SESSION["utente"]["nome"];
-    $cognome = $_SESSION["utente"]["cognome"];
-    header('Location: ./home.php');
+    $nome = $_SESSION["utente"]["Nome"];
+    $cognome = $_SESSION["utente"]["Cognome"];
+    // header('Location: ./home.php');
 } else {
     $utente_autenticato = false;
     echo "<p>Wrong credentials!</p>";
