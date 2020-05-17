@@ -71,18 +71,28 @@ if(array_key_exists('action',$_GET)){
             break;
     }
     // unset($_GET);
-    // header("Location: ".$_SERVER['PHP_SELF']);
+    header("Location: ".$_SERVER['PHP_SELF']);
    
 } 
 ?>
 
 <form action="./home.php" method="get">
   <input type="submit" name="action" value="add">
+
+  <p><?php 
+  
+  $result = $pdo->query("SELECT n_presenti FROM presenti WHERE ID='X'")->fetch();
+  // console_log($result);
+  echo $result['n_presenti'];
+
+  ?></p>
+
   <input type="submit" name="action" value="remove">
 </form>
 <form action="./logout.php">
     <input type="submit" value="Logout" />
 </form>
 
+<script src="./utils/reload.js"></script>
 </body>
 </html>
